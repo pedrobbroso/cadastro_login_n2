@@ -3,35 +3,43 @@ package com.example.n2_pedrobalbastrobroso_andrecorradi
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var email: EditText
+    private lateinit var senha: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mAuth = FirebaseAuth.getInstance()
+        //validarForm(email, senha)
 
         cadastrar.setOnClickListener {
             val email = email.text.toString()
             val senha = senha.text.toString()
 
-            mAuth.createUserWithEmailAndPassword(email, senha)
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        Toast.makeText(
-                            this, "Registrado com sucesso!!! " + email,
-                            Toast.LENGTH_LONG
-                        ).show();
-                    } else {
-                        Toast.makeText(this, "Algo de errado aconteceu!!!", Toast.LENGTH_LONG)
-                            .show();
-                    }
-                }
 
+            //if (validarForm(email as TextView, senha as TextView)) {
+                mAuth.createUserWithEmailAndPassword(email, senha)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            Toast.makeText(
+                                this, "Registrado com sucesso!!! " + email,
+                                Toast.LENGTH_LONG
+                            ).show();
+                        } else {
+                            Toast.makeText(this, "Algo de errado aconteceu!!!", Toast.LENGTH_LONG)
+                                .show();
+                        }
+                    }
+            //}
         }
 
         logar.setOnClickListener {
@@ -56,5 +64,18 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
         }
+    }
+
+    private fun validarForm (email: TextView, senha: TextView): Boolean {
+        var valido=true
+        if (TextUtils.isEmpty(email.text.toString())){
+            email.error="Campo obrigatorio"
+            valido= false
+        }
+        if (TextUtils.isEmpty(senha.text.toString())){
+            senha.error="Campo obrigatorio"
+            valido= false
+        }
+        return valido
     }
 }
