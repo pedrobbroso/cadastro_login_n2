@@ -12,21 +12,16 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
-    private lateinit var email: EditText
-    private lateinit var senha: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mAuth = FirebaseAuth.getInstance()
-        //validarForm(email, senha)
 
         cadastrar.setOnClickListener {
             val email = email.text.toString()
             val senha = senha.text.toString()
 
-
-            //if (validarForm(email as TextView, senha as TextView)) {
                 mAuth.createUserWithEmailAndPassword(email, senha)
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
@@ -39,7 +34,6 @@ class MainActivity : AppCompatActivity() {
                                 .show();
                         }
                     }
-            //}
         }
 
         logar.setOnClickListener {
